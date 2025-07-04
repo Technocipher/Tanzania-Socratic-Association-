@@ -3,26 +3,25 @@ import React, { useState } from 'react';
 import { X, CreditCard, Smartphone } from 'lucide-react';
 
 interface PaymentModalProps {
-  isOpen: boolean;
+  book: {
+    id: number;
+    title: string;
+    price: number;
+  };
   onClose: () => void;
-  bookTitle: string;
-  price: string;
 }
 
-const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, bookTitle, price }) => {
-  const [paymentMethod, setPaymentMethod] = useState<'visa' | 'mpesa'>('visa');
+const PaymentModal: React.FC<PaymentModalProps> = ({ book, onClose }) => {
+  const [paymentMethod, setPaymentMethod] = useState('visa');
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     cardNumber: '',
-    expiryMonth: '',
-    expiryYear: '',
+    expiryDate: '',
     cvv: '',
     mpesaPhone: '',
     address: ''
   });
-
-  if (!isOpen) return null;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,8 +33,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, bookTitle,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would integrate with actual payment processing
-    alert(`Payment processing for ${bookTitle} would be handled here. This is a demo.`);
+    const message = `Hello! I want to buy "${book.title}" from your store for ${book.price.toLocaleString()} TSH. My details: Name: ${formData.name}, Phone: ${formData.phone}, Address: ${formData.address}`;
+    const whatsappUrl = `https://wa.me/255752837561?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
     onClose();
   };
 
@@ -43,8 +43,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, bookTitle,
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Complete Purchase</h2>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Purchase {book.title}</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -54,136 +54,45 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, bookTitle,
           </div>
 
           <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-semibold text-gray-900">{bookTitle}</h3>
-            <p className="text-green-600 font-bold">{price}</p>
+            <h3 className="font-semibold text-gray-900">{book.title}</h3>
+            <p className="text-2xl font-bold text-green-600">TSH {book.price.toLocaleString()}</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name *
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="Enter your full name"
+              />
             </div>
-
-            <div className="flex space-x-4 mb-4">
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('visa')}
-                className={`flex-1 py-3 px-4 rounded-lg border-2 transition-colors ${
-                  paymentMethod === 'visa'
-                    ? 'border-green-500 bg-green-50 text-green-700'
-                    : 'border-gray-300 text-gray-700'
-                }`}
-              >
-                <CreditCard className="mx-auto mb-2" size={24} />
-                <span className="text-sm font-medium">Visa Card</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('mpesa')}
-                className={`flex-1 py-3 px-4 rounded-lg border-2 transition-colors ${
-                  paymentMethod === 'mpesa'
-                    ? 'border-green-500 bg-green-50 text-green-700'
-                    : 'border-gray-300 text-gray-700'
-                }`}
-              >
-                <Smartphone className="mx-auto mb-2" size={24} />
-                <span className="text-sm font-medium">M-Pesa</span>
-              </button>
-            </div>
-
-            {paymentMethod === 'visa' ? (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
-                  <input
-                    type="text"
-                    name="cardNumber"
-                    value={formData.cardNumber}
-                    onChange={handleInputChange}
-                    placeholder="1234 5678 9012 3456"
-                    required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
-                    <input
-                      type="text"
-                      name="expiryMonth"
-                      value={formData.expiryMonth}
-                      onChange={handleInputChange}
-                      placeholder="MM"
-                      maxLength={2}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-                    <input
-                      type="text"
-                      name="expiryYear"
-                      value={formData.expiryYear}
-                      onChange={handleInputChange}
-                      placeholder="YY"
-                      maxLength={2}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">CVV</label>
-                    <input
-                      type="text"
-                      name="cvv"
-                      value={formData.cvv}
-                      onChange={handleInputChange}
-                      placeholder="123"
-                      maxLength={3}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">M-Pesa Phone Number</label>
-                <input
-                  type="tel"
-                  name="mpesaPhone"
-                  value={formData.mpesaPhone}
-                  onChange={handleInputChange}
-                  placeholder="+255 XXX XXX XXX"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-              </div>
-            )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number *
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="+255..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Delivery Address *
+              </label>
               <textarea
                 name="address"
                 value={formData.address}
@@ -191,21 +100,22 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, bookTitle,
                 required
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
-                placeholder="Enter your delivery address or pickup instructions"
+                placeholder="Enter your delivery address"
               />
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p className="text-sm text-yellow-800">
-                🔒 Your payment information is secured and encrypted. Please ensure your details are correct before submission.
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> After clicking "Proceed to WhatsApp", you'll be redirected to WhatsApp 
+                to complete your order directly with our team. Payment will be arranged through the chat.
               </p>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300"
+              className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
             >
-              Complete Purchase
+              Proceed to WhatsApp
             </button>
           </form>
         </div>

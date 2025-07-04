@@ -26,6 +26,14 @@ const ContactPage = () => {
     window.location.href = mailtoLink;
   };
 
+  const handlePhoneClick = () => {
+    window.location.href = 'tel:+255752837561';
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = 'mailto:manumbadaudi@gmail.com';
+  };
+
   return (
     <div className="min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,7 +54,10 @@ const ContactPage = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-8">Contact Information</h2>
             
             <div className="space-y-6">
-              <div className="flex items-center">
+              <button
+                onClick={handlePhoneClick}
+                className="flex items-center w-full text-left hover:bg-white/50 p-4 rounded-lg transition-colors"
+              >
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center mr-4">
                   <Phone className="text-white" size={20} />
                 </div>
@@ -54,9 +65,12 @@ const ContactPage = () => {
                   <h3 className="font-semibold text-gray-900">Phone</h3>
                   <p className="text-gray-600">+255752837561</p>
                 </div>
-              </div>
+              </button>
               
-              <div className="flex items-center">
+              <button
+                onClick={handleEmailClick}
+                className="flex items-center w-full text-left hover:bg-white/50 p-4 rounded-lg transition-colors"
+              >
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-lg flex items-center justify-center mr-4">
                   <Mail className="text-white" size={20} />
                 </div>
@@ -64,7 +78,7 @@ const ContactPage = () => {
                   <h3 className="font-semibold text-gray-900">Email</h3>
                   <p className="text-gray-600">manumbadaudi@gmail.com</p>
                 </div>
-              </div>
+              </button>
               
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center mr-4">
