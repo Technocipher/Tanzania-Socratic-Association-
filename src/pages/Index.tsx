@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
 import HomePage from '../components/HomePage';
 import AboutPage from '../components/AboutPage';
@@ -6,10 +6,26 @@ import SchoolsPage from '../components/SchoolsPage';
 import StorePage from '../components/StorePage';
 import ContactPage from '../components/ContactPage';
 import AvailableCountriesPage from '../components/AvailableCountriesPage';
+import MemberRegistrationPage from '../components/MemberRegistrationPage';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Handle hash-based navigation for registration
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#register') {
+        setCurrentPage('register');
+        window.location.hash = '';
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const navigation = [
     { name: 'Home', id: 'home' },
@@ -18,6 +34,7 @@ const Index = () => {
     { name: 'Countries', id: 'countries' },
     { name: 'Store', id: 'store' },
     { name: 'Contact', id: 'contact' },
+    { name: 'Register', id: 'register' },
   ];
 
   const renderCurrentPage = () => {
@@ -34,6 +51,8 @@ const Index = () => {
         return <StorePage />;
       case 'contact':
         return <ContactPage />;
+      case 'register':
+        return <MemberRegistrationPage />;
       default:
         return <HomePage />;
     }

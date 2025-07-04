@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ExternalLink, Users, BookOpen, Award } from 'lucide-react';
+import { ExternalLink, Users, BookOpen, Award, UserPlus } from 'lucide-react';
 
 const HomePage = () => {
   const handleJoinAssociation = () => {
@@ -22,14 +21,23 @@ const HomePage = () => {
               <p className="text-xl md:text-2xl mb-8 text-green-100">
                 Empowering Students Through Quality Geography Education Across Tanzania
               </p>
-              <button
-                onClick={handleJoinAssociation}
-                className="inline-flex items-center px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                <Users className="mr-2" size={24} />
-                Join Our Association
-                <ExternalLink className="ml-2" size={20} />
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <button
+                  onClick={handleJoinAssociation}
+                  className="inline-flex items-center px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  <Users className="mr-2" size={24} />
+                  Join WhatsApp Group
+                  <ExternalLink className="ml-2" size={20} />
+                </button>
+                <button
+                  onClick={() => window.location.hash = '#register'}
+                  className="inline-flex items-center px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-white/30"
+                >
+                  <UserPlus className="mr-2" size={24} />
+                  Register as Member
+                </button>
+              </div>
             </div>
             
             <div className="flex justify-center lg:justify-end">
@@ -105,14 +113,23 @@ const HomePage = () => {
           <p className="text-xl mb-8 text-green-100">
             Connect with fellow educators and students. Access quality Geography materials and examinations.
           </p>
-          <button
-            onClick={handleJoinAssociation}
-            className="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            <Users className="mr-2" size={24} />
-            Join Our WhatsApp Group
-            <ExternalLink className="ml-2" size={20} />
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={handleJoinAssociation}
+              className="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              <Users className="mr-2" size={24} />
+              Join Our WhatsApp Group
+              <ExternalLink className="ml-2" size={20} />
+            </button>
+            <button
+              onClick={() => window.location.hash = '#register'}
+              className="inline-flex items-center px-8 py-4 bg-transparent hover:bg-white/10 text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-white"
+            >
+              <UserPlus className="mr-2" size={24} />
+              Become a Member
+            </button>
+          </div>
         </div>
       </section>
     </div>
