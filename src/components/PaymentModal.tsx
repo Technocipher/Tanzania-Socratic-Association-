@@ -1,255 +1,214 @@
 
 import React, { useState } from 'react';
-import { X, CreditCard, Smartphone, MapPin, User, Phone, Mail } from 'lucide-react';
+import { X, CreditCard, Smartphone } from 'lucide-react';
 
-const PaymentModal = ({ book, onClose }) => {
-  const [paymentMethod, setPaymentMethod] = useState('card');
+interface PaymentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  bookTitle: string;
+  price: string;
+}
+
+const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, bookTitle, price }) => {
+  const [paymentMethod, setPaymentMethod] = useState<'visa' | 'mpesa'>('visa');
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: '',
-    address: '',
     cardNumber: '',
-    expiryDate: '',
+    expiryMonth: '',
+    expiryYear: '',
     cvv: '',
-    mpesaPhone: ''
+    mpesaPhone: '',
+    address: ''
   });
 
-  const handleInputChange = (field, value) => {
+  if (!isOpen) return null;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [name]: value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Basic validation
-    if (!formData.name || !formData.phone) {
-      alert('Please fill in your name and phone number.');
-      return;
-    }
-
-    if (paymentMethod === 'card' && (!formData.cardNumber || !formData.expiryDate || !formData.cvv)) {
-      alert('Please fill in all card details.');
-      return;
-    }
-
-    if (paymentMethod === 'mpesa' && !formData.mpesaPhone) {
-      alert('Please provide your M-Pesa phone number.');
-      return;
-    }
-
-    // Simulate payment processing
-    alert(`Payment processing for ${book.title}. You will receive confirmation shortly.`);
+    // Here you would integrate with actual payment processing
+    alert(`Payment processing for ${bookTitle} would be handled here. This is a demo.`);
     onClose();
   };
 
-  const formatPrice = (price) => {
-    return `TSH ${price.toLocaleString()}`;
-  };
-
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-green-600 to-blue-600 p-6 text-white relative">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-white hover:text-gray-200 transition-colors"
-          >
-            <X size={24} />
-          </button>
-          <h2 className="text-2xl font-bold mb-2">Complete Your Purchase</h2>
-          <p className="text-green-100">{book.title}</p>
-          <p className="text-2xl font-bold text-yellow-300">{formatPrice(book.price)}</p>
-        </div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Complete Purchase</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Personal Information */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <User className="mr-2 text-green-600" size={20} />
-              Personal Information
-            </h3>
-            
-            <div className="space-y-4">
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-semibold text-gray-900">{bookTitle}</h3>
+            <p className="text-green-600 font-bold">{price}</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                 <input
                   type="text"
+                  name="name"
                   value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="Enter your full name"
+                  onChange={handleInputChange}
                   required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
-              
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                 <input
                   type="tel"
+                  name="phone"
                   value={formData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="+255XXXXXXXXX"
+                  onChange={handleInputChange}
                   required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
-                  <MapPin className="mr-1" size={16} />
-                  Delivery Address/Instructions
-                </label>
-                <textarea
-                  value={formData.address}
-                  onChange={(e) => handleInputChange('address', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  rows="3"
-                  placeholder="Enter your address or delivery instructions"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
             </div>
-          </div>
 
-          {/* Payment Method Selection */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
-            
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="flex space-x-4 mb-4">
               <button
                 type="button"
-                onClick={() => setPaymentMethod('card')}
-                className={`p-4 border-2 rounded-lg text-center transition-all ${
-                  paymentMethod === 'card'
+                onClick={() => setPaymentMethod('visa')}
+                className={`flex-1 py-3 px-4 rounded-lg border-2 transition-colors ${
+                  paymentMethod === 'visa'
                     ? 'border-green-500 bg-green-50 text-green-700'
-                    : 'border-gray-300 hover:border-gray-400'
+                    : 'border-gray-300 text-gray-700'
                 }`}
               >
                 <CreditCard className="mx-auto mb-2" size={24} />
-                <div className="font-medium">Visa Card</div>
+                <span className="text-sm font-medium">Visa Card</span>
               </button>
-              
               <button
                 type="button"
                 onClick={() => setPaymentMethod('mpesa')}
-                className={`p-4 border-2 rounded-lg text-center transition-all ${
+                className={`flex-1 py-3 px-4 rounded-lg border-2 transition-colors ${
                   paymentMethod === 'mpesa'
                     ? 'border-green-500 bg-green-50 text-green-700'
-                    : 'border-gray-300 hover:border-gray-400'
+                    : 'border-gray-300 text-gray-700'
                 }`}
               >
                 <Smartphone className="mx-auto mb-2" size={24} />
-                <div className="font-medium">M-Pesa</div>
+                <span className="text-sm font-medium">M-Pesa</span>
               </button>
             </div>
 
-            {/* Card Payment Fields */}
-            {paymentMethod === 'card' && (
+            {paymentMethod === 'visa' ? (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Card Number *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
                   <input
                     type="text"
+                    name="cardNumber"
                     value={formData.cardNumber}
-                    onChange={(e) => handleInputChange('cardNumber', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    onChange={handleInputChange}
                     placeholder="1234 5678 9012 3456"
-                    maxLength="19"
                     required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Expiry Date *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
                     <input
                       type="text"
-                      value={formData.expiryDate}
-                      onChange={(e) => handleInputChange('expiryDate', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder="MM/YY"
-                      maxLength="5"
+                      name="expiryMonth"
+                      value={formData.expiryMonth}
+                      onChange={handleInputChange}
+                      placeholder="MM"
+                      maxLength={2}
                       required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     />
                   </div>
-                  
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      CVV *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
                     <input
                       type="text"
-                      value={formData.cvv}
-                      onChange={(e) => handleInputChange('cvv', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder="123"
-                      maxLength="4"
+                      name="expiryYear"
+                      value={formData.expiryYear}
+                      onChange={handleInputChange}
+                      placeholder="YY"
+                      maxLength={2}
                       required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">CVV</label>
+                    <input
+                      type="text"
+                      name="cvv"
+                      value={formData.cvv}
+                      onChange={handleInputChange}
+                      placeholder="123"
+                      maxLength={3}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     />
                   </div>
                 </div>
               </div>
-            )}
-
-            {/* M-Pesa Payment Fields */}
-            {paymentMethod === 'mpesa' && (
+            ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  M-Pesa Phone Number *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">M-Pesa Phone Number</label>
                 <input
                   type="tel"
+                  name="mpesaPhone"
                   value={formData.mpesaPhone}
-                  onChange={(e) => handleInputChange('mpesaPhone', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="+255XXXXXXXXX"
+                  onChange={handleInputChange}
+                  placeholder="+255 XXX XXX XXX"
                   required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
-                <p className="text-sm text-gray-600 mt-1">
-                  You will receive an STK push notification to complete the payment.
-                </p>
               </div>
             )}
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
-          >
-            Complete Purchase - {formatPrice(book.price)}
-          </button>
-          
-          <p className="text-xs text-gray-500 text-center">
-            By completing this purchase, you agree to our terms and conditions.
-          </p>
-        </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                required
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                placeholder="Enter your delivery address or pickup instructions"
+              />
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <p className="text-sm text-yellow-800">
+                🔒 Your payment information is secured and encrypted. Please ensure your details are correct before submission.
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300"
+            >
+              Complete Purchase
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ const HomePage = () => {
               <div className="relative">
                 <div className="w-80 h-80 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/20">
                   <img
-                    src="/placeholder.svg"
+                    src="/lovable-uploads/3d961545-8411-4450-be9e-c107ce883cdc.png"
                     alt="Mr. Daudi Musula Manumba - Founder"
                     className="w-72 h-72 rounded-full object-cover border-4 border-white shadow-2xl"
                   />
