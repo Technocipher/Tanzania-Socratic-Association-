@@ -8,39 +8,12 @@ const AnnouncementsPage = () => {
   const announcements = [
     {
       id: 1,
-      title: "Geography Examination Schedule Released",
-      content: "The 2025 Geography examination schedule has been officially released. Students are advised to check their respective school portals for specific dates and times.",
-      date: "2025-01-08",
-      time: "10:30 AM",
+      title: "🎉 CONGRATULATIONS TO OUR DEDICATED GEOGRAPHY TEACHERS! 🎉",
+      content: "We are thrilled to extend our heartfelt CONGRATULATIONS to all Geography teachers for achieving outstanding results in the NECTA examinations! 🌍📚\n\nYour tireless efforts, strategic preparation, and commitment to using Series Exams have yielded remarkable success. The improvement in performance is a true reflection of your dedication, teamwork, and passion for excellence in education.\n\nThe Series Exams played a pivotal role in equipping students with the skills, confidence, and knowledge needed to shine in the final exams. This achievement would not have been possible without your continuous support and hard work.",
+      date: "2025-01-09",
+      time: "2:00 PM",
       priority: "high",
-      category: "Examinations"
-    },
-    {
-      id: 2,
-      title: "New Study Materials Available",
-      content: "Updated study materials for Form 4 and Form 6 Geography are now available in our store. These materials cover the latest curriculum updates and examination patterns.",
-      date: "2025-01-07",
-      time: "2:15 PM",
-      priority: "medium",
-      category: "Resources"
-    },
-    {
-      id: 3,
-      title: "Regional Workshop Registration Open",
-      content: "Registration is now open for the regional Geography teachers' workshop scheduled for February 2025. Limited seats available - register early to secure your spot.",
-      date: "2025-01-06",
-      time: "9:00 AM",
-      priority: "medium",
-      category: "Workshops"
-    },
-    {
-      id: 4,
-      title: "System Maintenance Notice",
-      content: "Our online platform will undergo scheduled maintenance on January 15th from 2:00 AM to 6:00 AM. Services may be temporarily unavailable during this period.",
-      date: "2025-01-05",
-      time: "11:45 AM",
-      priority: "low",
-      category: "Technical"
+      category: "Congratulations"
     }
   ];
 
@@ -111,7 +84,7 @@ const AnnouncementsPage = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base leading-relaxed">
+                <CardDescription className="text-base leading-relaxed whitespace-pre-line">
                   {announcement.content}
                 </CardDescription>
               </CardContent>
