@@ -1,10 +1,6 @@
 
 import React, { useState } from 'react';
-import { UserPlus, Mail, MessageCircle, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { UserPlus, Mail, Phone, MapPin, School, Users, CheckCircle } from 'lucide-react';
 
 const MemberRegistrationPage = () => {
   const [formData, setFormData] = useState({
@@ -14,8 +10,8 @@ const MemberRegistrationPage = () => {
     schoolName: '',
     inWhatsAppGroup: ''
   });
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -26,7 +22,7 @@ const MemberRegistrationPage = () => {
     
     if (!formData.phoneNumber.trim()) {
       newErrors.phoneNumber = 'Phone number is required';
-    } else if (!/^\+?[\d\s-()]+$/.test(formData.phoneNumber)) {
+    } else if (!/^\+?[\d\s\-\(\)]+$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = 'Please enter a valid phone number';
     }
     
@@ -46,17 +42,18 @@ const MemberRegistrationPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [name]: value
     }));
     
     // Clear error when user starts typing
-    if (errors[field]) {
+    if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [field]: ''
+        [name]: ''
       }));
     }
   };
@@ -68,71 +65,55 @@ const MemberRegistrationPage = () => {
       return;
     }
 
-    // Prepare email content
-    const emailSubject = encodeURIComponent('New Member Registration - TASSA');
-    const emailBody = encodeURIComponent(`
-New Member Registration for Tanzania Advanced Schools Socratic Association
-
-Full Name: ${formData.fullName}
-Phone Number: ${formData.phoneNumber}
-Location: ${formData.location}
-School Name: ${formData.schoolName}
-Already in WhatsApp Group: ${formData.inWhatsAppGroup}
-
-Date: ${new Date().toLocaleDateString()}
-Time: ${new Date().toLocaleTimeString()}
-    `);
-
-    // Prepare WhatsApp message
-    const whatsappMessage = encodeURIComponent(`Hello, I am registering as a member of the Tanzania Advanced Schools Socratic Association.
+    // Create email message
+    const emailSubject = 'New Member Registration - TASSA';
+    const emailBody = `
+New member registration for Tanzania Advanced Schools Socratic Association:
 
 Name: ${formData.fullName}
 Phone: ${formData.phoneNumber}
 Location: ${formData.location}
 School: ${formData.schoolName}
-Already in WhatsApp Group: ${formData.inWhatsAppGroup}`);
+Already in WhatsApp Group: ${formData.inWhatsAppGroup}
+`;
+
+    // Create WhatsApp message
+    const whatsappMessage = `Hello, I am registering as a member of the Tanzania Advanced Schools Socratic Association.
+
+Name: ${formData.fullName}
+Phone: ${formData.phoneNumber}
+Location: ${formData.location}
+School: ${formData.schoolName}
+Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
 
     // Open email client
-    window.open(`mailto:manumbadaudi@gmail.com?subject=${emailSubject}&body=${emailBody}`, '_blank');
-    
-    // Open WhatsApp after a short delay
-    setTimeout(() => {
-      window.open(`https://wa.me/255752837561?text=${whatsappMessage}`, '_blank');
-    }, 1000);
+    const mailtoLink = `mailto:manumbadaudi@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    window.open(mailtoLink);
+
+    // Open WhatsApp
+    const whatsappLink = `https://wa.me/255752837561?text=${encodeURIComponent(whatsappMessage)}`;
+    window.open(whatsappLink, '_blank');
 
     setIsSubmitted(true);
   };
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-12">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-xl p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="h-8 w-8 text-green-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Registration Submitted Successfully!
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Thank you for registering! We've received your details on email and WhatsApp. 
-              Our team will review your application and get back to you soon.
+          <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+            <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-6" />
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Registration Successful!</h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Thank you for registering! We've received your details via email and WhatsApp. 
+              Our team will get back to you soon.
             </p>
-            <Button
-              onClick={() => {
-                setIsSubmitted(false);
-                setFormData({
-                  fullName: '',
-                  phoneNumber: '',
-                  location: '',
-                  schoolName: '',
-                  inWhatsAppGroup: ''
-                });
-              }}
-              className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+            <button
+              onClick={() => setIsSubmitted(false)}
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold rounded-lg transition-all duration-300"
             >
               Register Another Member
-            </Button>
+            </button>
           </div>
         </div>
       </div>
@@ -140,138 +121,131 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`);
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-20">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="text-center mb-8">
+        {/* Header */}
+        <div className="text-center mb-12">
           <div className="flex justify-center items-center mb-6">
             <UserPlus className="h-12 w-12 text-green-600 mr-4" />
             <h1 className="text-4xl font-bold text-gray-900">Member Registration</h1>
           </div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Join the Tanzania Advanced Schools Socratic Association. Fill out the form below to become a registered member.
+            Join the Tanzania Advanced Schools Socratic Association and become part of our educational community.
           </p>
         </div>
 
         {/* Registration Form */}
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Full Name */}
-            <div className="space-y-2">
-              <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+            <div>
+              <label htmlFor="fullName" className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <UserPlus className="h-4 w-4 mr-2" />
                 Full Name *
-              </Label>
-              <Input
-                id="fullName"
+              </label>
+              <input
                 type="text"
-                placeholder="Enter your full name"
+                id="fullName"
+                name="fullName"
                 value={formData.fullName}
-                onChange={(e) => handleInputChange('fullName', e.target.value)}
-                className={errors.fullName ? 'border-red-500' : ''}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                placeholder="Enter your full name"
               />
-              {errors.fullName && (
-                <p className="text-sm text-red-600">{errors.fullName}</p>
-              )}
+              {errors.fullName && <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>}
             </div>
 
             {/* Phone Number */}
-            <div className="space-y-2">
-              <Label htmlFor="phoneNumber" className="text-sm font-medium text-gray-700">
+            <div>
+              <label htmlFor="phoneNumber" className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <Phone className="h-4 w-4 mr-2" />
                 Phone Number (with country code) *
-              </Label>
-              <Input
-                id="phoneNumber"
+              </label>
+              <input
                 type="tel"
-                placeholder="e.g., +255752837561"
+                id="phoneNumber"
+                name="phoneNumber"
                 value={formData.phoneNumber}
-                onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                className={errors.phoneNumber ? 'border-red-500' : ''}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                placeholder="+255 xxx xxx xxx"
               />
-              {errors.phoneNumber && (
-                <p className="text-sm text-red-600">{errors.phoneNumber}</p>
-              )}
+              {errors.phoneNumber && <p className="mt-1 text-sm text-red-600">{errors.phoneNumber}</p>}
             </div>
 
             {/* Location */}
-            <div className="space-y-2">
-              <Label htmlFor="location" className="text-sm font-medium text-gray-700">
+            <div>
+              <label htmlFor="location" className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <MapPin className="h-4 w-4 mr-2" />
                 Location (District/Region) *
-              </Label>
-              <Input
-                id="location"
+              </label>
+              <input
                 type="text"
-                placeholder="Enter your district or region"
+                id="location"
+                name="location"
                 value={formData.location}
-                onChange={(e) => handleInputChange('location', e.target.value)}
-                className={errors.location ? 'border-red-500' : ''}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                placeholder="Enter your district/region"
               />
-              {errors.location && (
-                <p className="text-sm text-red-600">{errors.location}</p>
-              )}
+              {errors.location && <p className="mt-1 text-sm text-red-600">{errors.location}</p>}
             </div>
 
             {/* School Name */}
-            <div className="space-y-2">
-              <Label htmlFor="schoolName" className="text-sm font-medium text-gray-700">
+            <div>
+              <label htmlFor="schoolName" className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <School className="h-4 w-4 mr-2" />
                 School Name *
-              </Label>
-              <Input
-                id="schoolName"
+              </label>
+              <input
                 type="text"
-                placeholder="Enter your school name"
+                id="schoolName"
+                name="schoolName"
                 value={formData.schoolName}
-                onChange={(e) => handleInputChange('schoolName', e.target.value)}
-                className={errors.schoolName ? 'border-red-500' : ''}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                placeholder="Enter your school name"
               />
-              {errors.schoolName && (
-                <p className="text-sm text-red-600">{errors.schoolName}</p>
-              )}
+              {errors.schoolName && <p className="mt-1 text-sm text-red-600">{errors.schoolName}</p>}
             </div>
 
             {/* WhatsApp Group Status */}
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">
+            <div>
+              <label htmlFor="inWhatsAppGroup" className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <Users className="h-4 w-4 mr-2" />
                 Are you already in the WhatsApp Group? *
-              </Label>
-              <Select 
-                value={formData.inWhatsAppGroup} 
-                onValueChange={(value) => handleInputChange('inWhatsAppGroup', value)}
+              </label>
+              <select
+                id="inWhatsAppGroup"
+                name="inWhatsAppGroup"
+                value={formData.inWhatsAppGroup}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
               >
-                <SelectTrigger className={errors.inWhatsAppGroup ? 'border-red-500' : ''}>
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Yes">Yes</SelectItem>
-                  <SelectItem value="No">No</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.inWhatsAppGroup && (
-                <p className="text-sm text-red-600">{errors.inWhatsAppGroup}</p>
-              )}
+                <option value="">Select an option</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+              {errors.inWhatsAppGroup && <p className="mt-1 text-sm text-red-600">{errors.inWhatsAppGroup}</p>}
             </div>
 
             {/* Submit Button */}
-            <div className="pt-6">
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300"
-              >
-                <div className="flex items-center justify-center">
-                  <Mail className="h-5 w-5 mr-2" />
-                  <span>Submit Registration</span>
-                  <MessageCircle className="h-5 w-5 ml-2" />
-                </div>
-              </Button>
-            </div>
-
-            {/* Information Note */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> Upon submission, your registration details will be sent via email to our administration 
-                and you'll be redirected to WhatsApp to complete the registration process.
-              </p>
-            </div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+            >
+              <Mail className="h-5 w-5 mr-2" />
+              Register Now
+            </button>
           </form>
+        </div>
+
+        {/* Info Section */}
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <p className="text-blue-800 text-center">
+            <strong>Note:</strong> After submitting this form, your details will be sent via email and WhatsApp. 
+            Please ensure all information is accurate.
+          </p>
         </div>
       </div>
     </div>
