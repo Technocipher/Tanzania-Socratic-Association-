@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
 import HomePage from '../components/HomePage';
@@ -59,14 +60,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/20">
       {/* Navigation */}
-      <nav className="bg-gradient-to-r from-green-600 to-blue-600 shadow-lg sticky top-0 z-50">
+      <nav className="bg-gradient-to-r from-primary to-primary/80 shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <h1 className="text-white text-lg font-bold">TASSA</h1>
+                <h1 className="text-primary-foreground text-lg font-bold">TASSA</h1>
               </div>
             </div>
             
@@ -78,8 +79,8 @@ const Index = () => {
                   onClick={() => setCurrentPage(item.id)}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     currentPage === item.id
-                      ? 'bg-white/20 text-white'
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
+                      ? 'bg-primary-foreground/20 text-primary-foreground'
+                      : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
                   }`}
                 >
                   {item.name}
@@ -91,7 +92,7 @@ const Index = () => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-white hover:text-white/80 p-2"
+                className="text-primary-foreground hover:text-primary-foreground/80 p-2"
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -101,7 +102,7 @@ const Index = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-green-700/95 backdrop-blur-sm">
+          <div className="md:hidden bg-primary/95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
                 <button
@@ -112,8 +113,8 @@ const Index = () => {
                   }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     currentPage === item.id
-                      ? 'bg-white/20 text-white'
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
+                      ? 'bg-primary-foreground/20 text-primary-foreground'
+                      : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'
                   }`}
                 >
                   {item.name}
