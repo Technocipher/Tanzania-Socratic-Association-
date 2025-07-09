@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
 import HomePage from '../components/HomePage';
@@ -8,6 +7,7 @@ import StorePage from '../components/StorePage';
 import ContactPage from '../components/ContactPage';
 import AvailableCountriesPage from '../components/AvailableCountriesPage';
 import MemberRegistrationPage from '../components/MemberRegistrationPage';
+import AnnouncementsPage from '../components/AnnouncementsPage';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -33,6 +33,7 @@ const Index = () => {
     { name: 'About', id: 'about' },
     { name: 'Schools', id: 'schools' },
     { name: 'Countries', id: 'countries' },
+    { name: 'Announcements', id: 'announcements' },
     { name: 'Store', id: 'store' },
     { name: 'Contact', id: 'contact' },
     { name: 'Register', id: 'register' },
@@ -48,6 +49,8 @@ const Index = () => {
         return <SchoolsPage />;
       case 'countries':
         return <AvailableCountriesPage />;
+      case 'announcements':
+        return <AnnouncementsPage />;
       case 'store':
         return <StorePage />;
       case 'contact':
