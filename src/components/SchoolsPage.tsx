@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { School, MapPin, Users } from 'lucide-react';
 
@@ -26,7 +25,12 @@ const SchoolsPage = () => {
     'BEROYA SS',
     'RUGAMBWA SS',
     'DR SAMIA SULUHU HASSAN GIRLS SS',
-    'NYANKUMBU GIRLS HIGH SCHOOL'
+    'NYANKUMBU GIRLS HIGH SCHOOL',
+    'NYABUSOZI SS',
+    'BUKAMA SS',
+    'MWATULOLE SS',
+    'KIFUNGILO GIRLS SS',
+    'MWISI SS'
   ];
 
   return (
