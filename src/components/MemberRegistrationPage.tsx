@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { UserPlus, Mail, Phone, MapPin, School, Users, CheckCircle } from 'lucide-react';
+import { UserPlus, Mail, Phone, MapPin, School, Users, CheckCircle, AlertCircle } from 'lucide-react';
 
 const MemberRegistrationPage = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ const MemberRegistrationPage = () => {
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -56,45 +58,58 @@ const MemberRegistrationPage = () => {
         [name]: ''
       }));
     }
+    
+    // Clear submit error
+    if (submitError) {
+      setSubmitError('');
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) {
       return;
     }
 
-    // Create email message
-    const emailSubject = 'New Member Registration - TASSA';
-    const emailBody = `
-New member registration for Tanzania Advanced Schools Socratic Association:
+    setIsSubmitting(true);
+    setSubmitError('');
 
-Name: ${formData.fullName}
-Phone: ${formData.phoneNumber}
-Location: ${formData.location}
-School: ${formData.schoolName}
-Already in WhatsApp Group: ${formData.inWhatsAppGroup}
-`;
+    try {
+      const response = await fetch('https://sheetdb.io/api/v1/1hpb54lm5ia61', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            name: formData.fullName,
+            phone: formData.phoneNumber,
+            location: formData.location,
+            school: formData.schoolName,
+            whatsapp: formData.inWhatsAppGroup
+          }
+        })
+      });
 
-    // Create WhatsApp message
-    const whatsappMessage = `Hello, I am registering as a member of the Tanzania Advanced Schools Socratic Association.
-
-Name: ${formData.fullName}
-Phone: ${formData.phoneNumber}
-Location: ${formData.location}
-School: ${formData.schoolName}
-Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
-
-    // Open email client
-    const mailtoLink = `mailto:manumbadaudi@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-    window.open(mailtoLink);
-
-    // Open WhatsApp
-    const whatsappLink = `https://wa.me/255752837561?text=${encodeURIComponent(whatsappMessage)}`;
-    window.open(whatsappLink, '_blank');
-
-    setIsSubmitted(true);
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({
+          fullName: '',
+          phoneNumber: '',
+          location: '',
+          schoolName: '',
+          inWhatsAppGroup: ''
+        });
+      } else {
+        throw new Error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      setSubmitError('Something went wrong! Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
@@ -105,7 +120,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
             <CheckCircle className="h-16 w-16 text-primary mx-auto mb-6" />
             <h2 className="text-3xl font-bold text-foreground mb-4">Registration Successful!</h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Thank you for registering! We've received your details via email and WhatsApp. 
+              Thank you for registering! Your details have been successfully submitted to our system. 
               Our team will get back to you soon.
             </p>
             <button
@@ -136,6 +151,13 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
 
         {/* Registration Form */}
         <div className="bg-card rounded-2xl shadow-xl p-8">
+          {submitError && (
+            <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg flex items-center">
+              <AlertCircle className="h-5 w-5 text-destructive mr-3" />
+              <p className="text-destructive">{submitError}</p>
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Full Name */}
             <div>
@@ -151,6 +173,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-colors bg-background text-foreground"
                 placeholder="Enter your full name"
+                disabled={isSubmitting}
               />
               {errors.fullName && <p className="mt-1 text-sm text-destructive">{errors.fullName}</p>}
             </div>
@@ -169,6 +192,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-colors bg-background text-foreground"
                 placeholder="+255 xxx xxx xxx"
+                disabled={isSubmitting}
               />
               {errors.phoneNumber && <p className="mt-1 text-sm text-destructive">{errors.phoneNumber}</p>}
             </div>
@@ -187,6 +211,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-colors bg-background text-foreground"
                 placeholder="Enter your district/region"
+                disabled={isSubmitting}
               />
               {errors.location && <p className="mt-1 text-sm text-destructive">{errors.location}</p>}
             </div>
@@ -205,6 +230,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-colors bg-background text-foreground"
                 placeholder="Enter your school name"
+                disabled={isSubmitting}
               />
               {errors.schoolName && <p className="mt-1 text-sm text-destructive">{errors.schoolName}</p>}
             </div>
@@ -221,6 +247,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
                 value={formData.inWhatsAppGroup}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-colors bg-background text-foreground"
+                disabled={isSubmitting}
               >
                 <option value="">Select an option</option>
                 <option value="Yes">Yes</option>
@@ -232,10 +259,20 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary/90 disabled:bg-primary/50 text-primary-foreground font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:transform-none flex items-center justify-center"
             >
-              <Mail className="h-5 w-5 mr-2" />
-              Register Now
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-foreground mr-2"></div>
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  <Mail className="h-5 w-5 mr-2" />
+                  Register Now
+                </>
+              )}
             </button>
           </form>
         </div>
@@ -243,7 +280,7 @@ Already in WhatsApp Group: ${formData.inWhatsAppGroup}`;
         {/* Info Section */}
         <div className="mt-8 bg-secondary border border-border rounded-lg p-6">
           <p className="text-secondary-foreground text-center">
-            <strong>Note:</strong> After submitting this form, your details will be sent via email and WhatsApp. 
+            <strong>Note:</strong> After submitting this form, your details will be automatically saved to our database. 
             Please ensure all information is accurate.
           </p>
         </div>
