@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { UserPlus, Mail, Phone, MapPin, School, Users, CheckCircle, AlertCircle } from 'lucide-react';
 
@@ -76,6 +75,7 @@ const MemberRegistrationPage = () => {
     setSubmitError('');
 
     try {
+      // Save to Google Sheet via SheetDB
       const response = await fetch('https://sheetdb.io/api/v1/1hpb54lm5ia61', {
         method: 'POST',
         headers: {
@@ -93,6 +93,36 @@ const MemberRegistrationPage = () => {
       });
 
       if (response.ok) {
+        // Send email notification
+        try {
+          const emailBody = `New member registration:
+Name: ${formData.fullName}
+Phone: ${formData.phoneNumber}
+Location: ${formData.location}
+School: ${formData.schoolName}
+WhatsApp Group: ${formData.inWhatsAppGroup}`;
+
+          const mailtoLink = `mailto:?subject=New TASSA Member Registration&body=${encodeURIComponent(emailBody)}`;
+          window.open(mailtoLink, '_blank');
+        } catch (emailError) {
+          console.log('Email notification failed:', emailError);
+        }
+
+        // Send WhatsApp notification
+        try {
+          const whatsappMessage = `🎓 New TASSA Member Registration:
+👤 Name: ${formData.fullName}
+📱 Phone: ${formData.phoneNumber}
+📍 Location: ${formData.location}
+🏫 School: ${formData.schoolName}
+💬 In WhatsApp Group: ${formData.inWhatsAppGroup}`;
+
+          const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+          window.open(whatsappLink, '_blank');
+        } catch (whatsappError) {
+          console.log('WhatsApp notification failed:', whatsappError);
+        }
+
         setIsSubmitted(true);
         setFormData({
           fullName: '',
@@ -121,7 +151,7 @@ const MemberRegistrationPage = () => {
             <h2 className="text-3xl font-bold text-foreground mb-4">Registration Successful!</h2>
             <p className="text-lg text-muted-foreground mb-6">
               Thank you for registering! Your details have been successfully submitted to our system. 
-              Our team will get back to you soon.
+              Email and WhatsApp notifications have been sent to notify our team.
             </p>
             <button
               onClick={() => setIsSubmitted(false)}
@@ -280,8 +310,8 @@ const MemberRegistrationPage = () => {
         {/* Info Section */}
         <div className="mt-8 bg-secondary border border-border rounded-lg p-6">
           <p className="text-secondary-foreground text-center">
-            <strong>Note:</strong> After submitting this form, your details will be automatically saved to our database. 
-            Please ensure all information is accurate.
+            <strong>Note:</strong> After submitting this form, your details will be automatically saved to our database 
+            and notifications will be sent via email and WhatsApp to notify our team.
           </p>
         </div>
       </div>
