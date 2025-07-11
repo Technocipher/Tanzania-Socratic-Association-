@@ -82,15 +82,16 @@ const MemberRegistrationPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          data: {
-            name: formData.fullName,
-            phone: formData.phoneNumber,
-            location: formData.location,
-            school: formData.schoolName,
-            whatsapp: formData.inWhatsAppGroup
-          }
+          name: formData.fullName,
+          phone: formData.phoneNumber,
+          location: formData.location,
+          school: formData.schoolName,
+          whatsapp: formData.inWhatsAppGroup
         })
       });
+
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
 
       if (response.ok) {
         // Send email notification
@@ -132,7 +133,9 @@ WhatsApp Group: ${formData.inWhatsAppGroup}`;
           inWhatsAppGroup: ''
         });
       } else {
-        throw new Error('Registration failed');
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`Registration failed: ${response.status}`);
       }
     } catch (error) {
       console.error('Registration error:', error);
