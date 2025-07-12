@@ -30,7 +30,9 @@ const SchoolsPage = () => {
     'BUKAMA SS',
     'MWATULOLE SS',
     'KIFUNGILO GIRLS SS',
-    'MWISI SS'
+    'MWISI SS',
+    'LAUREATE SCHOOL OF ZANZIBAR',
+    'LUCAS MALIA SS'
   ];
 
   return (

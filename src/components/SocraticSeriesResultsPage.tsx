@@ -1,0 +1,251 @@
+
+import React, { useState } from 'react';
+import { Search, Download, Trophy, TrendingUp, Users, Award, FileText, Calendar } from 'lucide-react';
+
+const SocraticSeriesResultsPage = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSeries, setSelectedSeries] = useState('all');
+
+  const resultsSeries = [
+    {
+      id: 'series1-2024',
+      title: 'Socratic Series 1 - 2024',
+      date: 'March 2024',
+      participants: 2500,
+      status: 'Published'
+    },
+    {
+      id: 'series2-2024',
+      title: 'Socratic Series 2 - 2024',
+      date: 'June 2024',
+      participants: 3200,
+      status: 'Published'
+    },
+    {
+      id: 'series3-2024',
+      title: 'Socratic Series 3 - 2024',
+      date: 'September 2024',
+      participants: 2800,
+      status: 'Published'
+    }
+  ];
+
+  const topPerformers = [
+    { rank: 1, school: 'CHATO TECH SS', averageScore: 95.2, region: 'Geita' },
+    { rank: 2, school: 'DAREDA HIGH SCHOOL', averageScore: 94.8, region: 'Manyara' },
+    { rank: 3, school: 'ARUSHA SCIENCE SS', averageScore: 93.5, region: 'Arusha' },
+    { rank: 4, school: 'JANETH MAGUFULI GIRLS SS', averageScore: 92.1, region: 'Mwanza' },
+    { rank: 5, school: 'LAUREATE SCHOOL OF ZANZIBAR', averageScore: 91.8, region: 'Zanzibar' }
+  ];
+
+  const statistics = [
+    {
+      icon: Users,
+      title: 'Total Participants',
+      value: '8,500+',
+      description: 'Students participated in 2024'
+    },
+    {
+      icon: Trophy,
+      title: 'Average Performance',
+      value: '78.5%',
+      description: 'Overall average score'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Improvement Rate',
+      value: '15%',
+      description: 'Year-over-year improvement'
+    },
+    {
+      icon: Award,
+      title: 'Excellence Awards',
+      value: '250+',
+      description: 'Students awarded for excellence'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <span className="text-green-600">Socratic Series</span> Results
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Access comprehensive examination results, performance analytics, and recognition 
+            for outstanding achievements across all participating schools.
+          </p>
+        </div>
+
+        {/* Search and Filter Section */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search by school name or student ID..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+            </div>
+            <select
+              value={selectedSeries}
+              onChange={(e) => setSelectedSeries(e.target.value)}
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <option value="all">All Series</option>
+              {resultsSeries.map((series) => (
+                <option key={series.id} value={series.id}>
+                  {series.title}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="mt-4 flex flex-wrap gap-4">
+            <button className="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+              <Search className="mr-2" size={16} />
+              Search Results
+            </button>
+            <button className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+              <Download className="mr-2" size={16} />
+              Download Report
+            </button>
+          </div>
+        </div>
+
+        {/* Statistics Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {statistics.map((stat, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <stat.icon className="text-white" size={24} />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+              <p className="text-sm font-medium text-gray-700 mb-1">{stat.title}</p>
+              <p className="text-xs text-gray-500">{stat.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Available Results */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Results</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {resultsSeries.map((series, index) => (
+              <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-green-500">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-bold text-gray-900">{series.title}</h3>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-medium">
+                      {series.status}
+                    </span>
+                  </div>
+                  
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar size={16} className="mr-2" />
+                      <span>{series.date}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Users size={16} className="mr-2" />
+                      <span>{series.participants.toLocaleString()} participants</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors">
+                      View Results
+                    </button>
+                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                      <Download className="mr-2" size={16} />
+                      Download PDF
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top Performers */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Top Performing Schools</h2>
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">School</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Region</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Average Score</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {topPerformers.map((performer, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          {performer.rank <= 3 && (
+                            <Trophy className={`mr-2 ${
+                              performer.rank === 1 ? 'text-yellow-500' :
+                              performer.rank === 2 ? 'text-gray-400' :
+                              'text-yellow-600'
+                            }`} size={20} />
+                          )}
+                          <span className="text-sm font-medium text-gray-900">#{performer.rank}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{performer.school}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-500">{performer.region}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-bold text-green-600">{performer.averageScore}%</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact for Results */}
+        <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 lg:p-12 text-white text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Need Help Finding Your Results?
+          </h2>
+          <p className="text-xl mb-8 text-green-100 max-w-3xl mx-auto">
+            Can't find your school's results or need assistance? Contact our support team 
+            for personalized help with accessing your examination results.
+          </p>
+          <div className="space-y-4 md:space-y-0 md:space-x-4 md:flex md:justify-center">
+            <button
+              onClick={() => window.open('https://chat.whatsapp.com/FVJNhBkmAcgFR3loBxekXH?mode=r_c', '_blank')}
+              className="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              <Users className="mr-2" size={24} />
+              Contact Support
+            </button>
+            <button
+              onClick={() => window.open('tel:+255752837561')}
+              className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 text-white font-bold text-lg rounded-full transition-all duration-300"
+            >
+              Call Us
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SocraticSeriesResultsPage;

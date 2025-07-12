@@ -8,6 +8,8 @@ import ContactPage from '../components/ContactPage';
 import AvailableCountriesPage from '../components/AvailableCountriesPage';
 import MemberRegistrationPage from '../components/MemberRegistrationPage';
 import AnnouncementsPage from '../components/AnnouncementsPage';
+import SocraticSeriesExamsPage from '../components/SocraticSeriesExamsPage';
+import SocraticSeriesResultsPage from '../components/SocraticSeriesResultsPage';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -34,6 +36,8 @@ const Index = () => {
     { name: 'Schools', id: 'schools' },
     { name: 'Countries', id: 'countries' },
     { name: 'Announcements', id: 'announcements' },
+    { name: 'Exams', id: 'exams' },
+    { name: 'Results', id: 'results' },
     { name: 'Store', id: 'store' },
     { name: 'Contact', id: 'contact' },
     { name: 'Register', id: 'register' },
@@ -51,6 +55,10 @@ const Index = () => {
         return <AvailableCountriesPage />;
       case 'announcements':
         return <AnnouncementsPage />;
+      case 'exams':
+        return <SocraticSeriesExamsPage />;
+      case 'results':
+        return <SocraticSeriesResultsPage />;
       case 'store':
         return <StorePage />;
       case 'contact':
