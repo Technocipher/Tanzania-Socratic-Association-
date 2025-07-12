@@ -6,25 +6,25 @@ const SocraticSeriesExamsPage = () => {
   const examSeries = [
     {
       title: "Socratic Series 1",
-      date: "March 2025",
-      status: "Upcoming",
-      subjects: ["Geography", "History", "Civics"],
+      date: "July 2025",
+      status: "Registration Going",
+      subjects: ["Geography"],
       duration: "3 hours",
       fee: "15,000 TSh"
     },
     {
       title: "Socratic Series 2",
-      date: "June 2025",
-      status: "Registration Open",
-      subjects: ["Geography", "History", "Civics"],
+      date: "September 2025",
+      status: "Coming Soon",
+      subjects: ["Geography"],
       duration: "3 hours",
       fee: "15,000 TSh"
     },
     {
       title: "Socratic Series 3",
-      date: "September 2025",
+      date: "December 2025",
       status: "Coming Soon",
-      subjects: ["Geography", "History", "Civics"],
+      subjects: ["Geography"],
       duration: "3 hours",
       fee: "15,000 TSh"
     }
@@ -63,7 +63,7 @@ const SocraticSeriesExamsPage = () => {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Professional examination services designed to enhance student performance and 
-            provide comprehensive assessment in Geography, History, and Civics.
+            provide comprehensive assessment in Geography.
           </p>
         </div>
 
@@ -78,8 +78,7 @@ const SocraticSeriesExamsPage = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-gray-900">{exam.title}</h3>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    exam.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
-                    exam.status === 'Registration Open' ? 'bg-green-100 text-green-800' :
+                    exam.status === 'Registration Going' ? 'bg-green-100 text-green-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
                     {exam.status}
@@ -117,13 +116,13 @@ const SocraticSeriesExamsPage = () => {
 
                 <button
                   className={`w-full mt-6 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    exam.status === 'Registration Open'
+                    exam.status === 'Registration Going'
                       ? 'bg-green-600 hover:bg-green-700 text-white'
                       : 'bg-gray-300 text-gray-600 cursor-not-allowed'
                   }`}
-                  disabled={exam.status !== 'Registration Open'}
+                  disabled={exam.status !== 'Registration Going'}
                 >
-                  {exam.status === 'Registration Open' ? 'Register Now' : 'Registration Closed'}
+                  {exam.status === 'Registration Going' ? 'Register Now' : 'Registration Closed'}
                 </button>
               </div>
             </div>
