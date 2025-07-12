@@ -1,32 +1,41 @@
 
-import React from 'react';
-import { FileText, Calendar, Clock, Award, Download, BookOpen, Users } from 'lucide-react';
+import React, { useState } from 'react';
+import { FileText, Calendar, Clock, Award, Download, BookOpen, Users, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Button } from './ui/button';
 
 const SocraticSeriesExamsPage = () => {
+  const [selectedSeries, setSelectedSeries] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    schoolName: '',
+    contactPerson: '',
+    phoneNumber: '',
+    email: '',
+    numberOfStudents: ''
+  });
+
   const examSeries = [
     {
       title: "Socratic Series 1",
       date: "July 2025",
       status: "Registration Going",
       subjects: ["Geography"],
-      duration: "3 hours",
-      fee: "15,000 TSh"
+      duration: "3 hours"
     },
     {
       title: "Socratic Series 2",
-      date: "September 2025",
+      date: "Later in 2025",
       status: "Coming Soon",
       subjects: ["Geography"],
-      duration: "3 hours",
-      fee: "15,000 TSh"
+      duration: "3 hours"
     },
     {
       title: "Socratic Series 3",
-      date: "December 2025",
-      status: "Coming Soon",
+      date: "End of 2025",
+      status: "Coming Soon",  
       subjects: ["Geography"],
-      duration: "3 hours",
-      fee: "15,000 TSh"
+      duration: "3 hours"
     }
   ];
 
@@ -52,6 +61,46 @@ const SocraticSeriesExamsPage = () => {
       description: "Access to study materials and past papers for better preparation"
     }
   ];
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleRegister = (seriesTitle: string) => {
+    setSelectedSeries(seriesTitle);
+    setIsDialogOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { schoolName, contactPerson, phoneNumber, email, numberOfStudents } = formData;
+    
+    const message = `*EXAM REGISTRATION REQUEST*\n\n` +
+      `Series: ${selectedSeries}\n` +
+      `School Name: ${schoolName}\n` +
+      `Contact Person: ${contactPerson}\n` +
+      `Phone Number: ${phoneNumber}\n` +
+      `Email: ${email}\n` +
+      `Number of Students: ${numberOfStudents}\n\n` +
+      `Please process our registration for the ${selectedSeries}.`;
+
+    const whatsappUrl = `https://wa.me/255752837561?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Reset form and close dialog
+    setFormData({
+      schoolName: '',
+      contactPerson: '',
+      phoneNumber: '',
+      email: '',
+      numberOfStudents: ''
+    });
+    setIsDialogOpen(false);
+  };
 
   return (
     <div className="min-h-screen py-20">
@@ -94,10 +143,6 @@ const SocraticSeriesExamsPage = () => {
                     <Clock size={16} className="mr-2" />
                     <span>{exam.duration}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
-                    <Award size={16} className="mr-2" />
-                    <span>{exam.fee}</span>
-                  </div>
                 </div>
 
                 <div className="mt-4">
@@ -115,19 +160,126 @@ const SocraticSeriesExamsPage = () => {
                 </div>
 
                 <button
-                  className={`w-full mt-6 px-4 py-2 rounded-lg font-medium transition-colors ${
-                    exam.status === 'Registration Going'
-                      ? 'bg-green-600 hover:bg-green-700 text-white'
-                      : 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                  }`}
-                  disabled={exam.status !== 'Registration Going'}
+                  onClick={() => handleRegister(exam.title)}
+                  className="w-full mt-6 px-4 py-2 rounded-lg font-medium transition-colors bg-green-600 hover:bg-green-700 text-white"
                 >
-                  {exam.status === 'Registration Going' ? 'Register Now' : 'Registration Closed'}
+                  Register Now
                 </button>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Registration Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold text-gray-900">
+                Register for {selectedSeries}
+              </DialogTitle>
+            </DialogHeader>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700 mb-1">
+                  School Name *
+                </label>
+                <input
+                  type="text"
+                  id="schoolName"
+                  name="schoolName"
+                  value={formData.schoolName}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Enter school name"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="contactPerson" className="block text-sm font-medium text-gray-700 mb-1">
+                  Contact Person *
+                </label>
+                <input
+                  type="text"
+                  id="contactPerson"
+                  name="contactPerson"
+                  value={formData.contactPerson}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Enter contact person name"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Enter phone number"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Enter email address"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="numberOfStudents" className="block text-sm font-medium text-gray-700 mb-1">
+                  Number of Students *
+                </label>
+                <input
+                  type="number"
+                  id="numberOfStudents"
+                  name="numberOfStudents"
+                  value={formData.numberOfStudents}
+                  onChange={handleInputChange}
+                  required
+                  min="1"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Enter number of students"
+                />
+              </div>
+              
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsDialogOpen(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-green-600 hover:bg-green-700"
+                >
+                  Send to WhatsApp
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
 
         {/* Features Section */}
         <div className="mb-16">
