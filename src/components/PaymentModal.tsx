@@ -77,9 +77,9 @@ Please confirm this mobile money payment.`;
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-2xl max-w-md w-full p-8 text-center">
           <CheckCircle className="mx-auto text-green-600 mb-4" size={64} />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Order Confirmed!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Payment Initiated!</h2>
           <p className="text-gray-600 mb-6">
-            Your order details have been sent to our team. We'll process your payment and contact you shortly.
+            Your payment request has been processed. Please complete the payment on your mobile device and we'll contact you shortly to confirm your order.
           </p>
           <button
             onClick={onClose}
@@ -133,7 +133,7 @@ Please confirm this mobile money payment.`;
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Mobile Network *
+                Select Your Mobile Network *
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {networks.map((network) => (
@@ -157,7 +157,7 @@ Please confirm this mobile money payment.`;
             {selectedNetwork && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
+                  Phone Number for Payment *
                 </label>
                 <input
                   type="tel"
@@ -165,14 +165,17 @@ Please confirm this mobile money payment.`;
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="Enter your phone number"
+                  placeholder="Enter the phone number you'll use for payment"
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  Enter the exact number registered with your mobile money account
+                </p>
               </div>
             )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name *
+                Full Name (as registered on mobile money) *
               </label>
               <input
                 type="text"
@@ -180,7 +183,7 @@ Please confirm this mobile money payment.`;
                 onChange={(e) => setCustomerName(e.target.value)}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Enter your full name"
+                placeholder="Enter your full name as registered on your mobile money account"
               />
             </div>
 
@@ -194,14 +197,14 @@ Please confirm this mobile money payment.`;
                 required
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
-                placeholder="Enter your delivery address"
+                placeholder="Enter your complete delivery address"
               />
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
-                <strong>Demo Payment Flow:</strong> This will simulate a mobile money payment. 
-                You'll receive a confirmation message, and your order details will be sent to our team via WhatsApp.
+                <strong>Payment Process:</strong> After clicking "Pay Now", you'll receive a mobile money prompt on your phone. 
+                Please complete the payment and wait for confirmation. We'll process your order once payment is confirmed.
               </p>
             </div>
 
@@ -210,7 +213,7 @@ Please confirm this mobile money payment.`;
               disabled={!selectedNetwork || !phoneNumber || !customerName || !address}
               className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed"
             >
-              Confirm Purchase
+              Pay Now
             </button>
           </form>
         </div>
