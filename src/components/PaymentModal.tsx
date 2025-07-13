@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, CreditCard, Smartphone } from 'lucide-react';
+import { X, Smartphone, CheckCircle, Clock } from 'lucide-react';
 
 interface PaymentModalProps {
   book: {
@@ -12,32 +12,104 @@ interface PaymentModalProps {
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ book, onClose }) => {
-  const [paymentMethod, setPaymentMethod] = useState('visa');
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    mpesaPhone: '',
-    address: ''
-  });
+  const [selectedNetwork, setSelectedNetwork] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [address, setAddress] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const networks = [
+    { id: 'vodacom', name: 'Vodacom M-Pesa', prefix: '+255 75' },
+    { id: 'airtel', name: 'Airtel Money', prefix: '+255 78' },
+    { id: 'tigo', name: 'Tigo Pesa', prefix: '+255 71' },
+    { id: 'halopesa', name: 'Halo Pesa', prefix: '+255 76' }
+  ];
+
+  const handleNetworkChange = (networkId: string) => {
+    setSelectedNetwork(networkId);
+    const network = networks.find(n => n.id === networkId);
+    if (network) {
+      setPhoneNumber(network.prefix);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Hello! I want to buy "${book.title}" from your store for ${book.price.toLocaleString()} TSH. My details: Name: ${formData.name}, Phone: ${formData.phone}, Address: ${formData.address}`;
-    const whatsappUrl = `https://wa.me/255752837561?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    onClose();
+    
+    if (!selectedNetwork || !phoneNumber || !customerName || !address) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    // Simulate processing time
+    setTimeout(() => {
+      setIsProcessing(false);
+      setShowConfirmation(true);
+
+      // Send details to WhatsApp
+      const networkName = networks.find(n => n.id === selectedNetwork)?.name;
+      const message = `New Book Order Request:
+      
+📚 Book: ${book.title}
+💰 Price: TSH ${book.price.toLocaleString()}
+👤 Customer: ${customerName}
+📱 Phone: ${phoneNumber}
+🏢 Network: ${networkName}
+📍 Address: ${address}
+
+Please confirm this mobile money payment.`;
+
+      const whatsappUrl = `https://wa.me/255752837561?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+
+      // Auto close after showing confirmation
+      setTimeout(() => {
+        onClose();
+      }, 3000);
+    }, 2000);
   };
+
+  if (showConfirmation) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+          <CheckCircle className="mx-auto text-green-600 mb-4" size={64} />
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Order Confirmed!</h2>
+          <p className="text-gray-600 mb-6">
+            Your order details have been sent to our team. We'll process your payment and contact you shortly.
+          </p>
+          <button
+            onClick={onClose}
+            className="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isProcessing) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+          <Clock className="mx-auto text-blue-600 mb-4 animate-spin" size={64} />
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Processing Payment...</h2>
+          <p className="text-gray-600 mb-6">
+            Please wait for confirmation from your network provider. This may take a few moments.
+          </p>
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -61,13 +133,51 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ book, onClose }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                Select Mobile Network *
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {networks.map((network) => (
+                  <button
+                    key={network.id}
+                    type="button"
+                    onClick={() => handleNetworkChange(network.id)}
+                    className={`p-3 border rounded-lg text-sm font-medium transition-colors ${
+                      selectedNetwork === network.id
+                        ? 'border-green-500 bg-green-50 text-green-700'
+                        : 'border-gray-300 hover:border-green-300'
+                    }`}
+                  >
+                    <Smartphone className="mx-auto mb-1" size={20} />
+                    {network.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {selectedNetwork && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Name *
               </label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Enter your full name"
@@ -76,27 +186,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ book, onClose }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="+255..."
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Delivery Address *
               </label>
               <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 required
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
@@ -106,16 +200,17 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ book, onClose }) => {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
-                <strong>Note:</strong> After clicking "Proceed to WhatsApp", you'll be redirected to WhatsApp 
-                to complete your order directly with our team. Payment will be arranged through the chat.
+                <strong>Demo Payment Flow:</strong> This will simulate a mobile money payment. 
+                You'll receive a confirmation message, and your order details will be sent to our team via WhatsApp.
               </p>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+              disabled={!selectedNetwork || !phoneNumber || !customerName || !address}
+              className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed"
             >
-              Proceed to WhatsApp
+              Confirm Purchase
             </button>
           </form>
         </div>
