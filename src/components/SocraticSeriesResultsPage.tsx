@@ -68,11 +68,27 @@ const SocraticSeriesResultsPage = () => {
   return (
     <div className="min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Glowing Animated Header */}
+        <div className="text-center mb-12">
+          <div className="relative inline-block">
+            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-pulse mb-4">
+              SOCRATIC SERIES RESULTS
+            </h1>
+            <div className="absolute -inset-1 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-lg blur-lg opacity-30 animate-pulse"></div>
+          </div>
+          <div className="relative inline-block mt-4">
+            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 bg-clip-text text-transparent animate-pulse">
+              & SCHOOL PERFORMANCE
+            </h2>
+            <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 rounded-lg blur-lg opacity-25 animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Original Header Section */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            <span className="text-green-600">Socratic Series</span> Results
-          </h1>
+          <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <span className="text-green-600">Comprehensive</span> Academic Excellence
+          </h3>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Access comprehensive examination results, performance analytics, and recognition 
             for outstanding achievements across all participating schools.
