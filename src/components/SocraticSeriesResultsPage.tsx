@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Search, Download, Trophy, TrendingUp, Users, Award, FileText, Calendar } from 'lucide-react';
+import { Search, Download, Trophy, TrendingUp, Users, Award, FileText, Calendar, ExternalLink } from 'lucide-react';
 
 const SocraticSeriesResultsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -95,6 +95,25 @@ const SocraticSeriesResultsPage = () => {
           </p>
         </div>
 
+        {/* Access Results Section */}
+        <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 mb-12 text-white text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Access Complete Results
+          </h2>
+          <p className="text-xl mb-8 text-green-100 max-w-3xl mx-auto">
+            Download the complete Socratic Series examination results including all participating schools, 
+            rankings, and detailed performance analytics.
+          </p>
+          <button
+            onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
+            className="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            <Download className="mr-2" size={24} />
+            Download Complete Results
+            <ExternalLink className="ml-2" size={20} />
+          </button>
+        </div>
+
         {/* Search and Filter Section */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -127,9 +146,12 @@ const SocraticSeriesResultsPage = () => {
               <Search className="mr-2" size={16} />
               Search Results
             </button>
-            <button className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+            <button
+              onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
+              className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
               <Download className="mr-2" size={16} />
-              Download Report
+              Download Complete Results
             </button>
           </div>
         </div>
