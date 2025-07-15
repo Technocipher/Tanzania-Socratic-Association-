@@ -1,12 +1,17 @@
-
 import React, { useState } from 'react';
-import { Users, School, Search, MapPin, User, Award } from 'lucide-react';
+import { Users, School, Search, MapPin, User, Award, Star } from 'lucide-react';
 
 const MembersPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const members = [
-    { id: 1, name: 'Mwl. Daudi Musula Manumba', schools: 'Nyankumbu Girls SS & Janeth Magufuli Girls SS' },
+    { 
+      id: 1, 
+      name: 'Mwl. Daudi Musula Manumba', 
+      schools: 'Nyankumbu Girls SS & Janeth Magufuli Girls SS',
+      role: 'EXAMINATION COORDINATOR',
+      about: 'Professional Geography teacher with extensive experience in secondary education. Has taught at multiple institutions including Chato SS, Janeth Magufuli Girls SS, and Nyankumbu Girls SS, bringing years of expertise in Geography education and examination coordination.'
+    },
     { id: 2, name: 'Mwl. Baluhya Mbonge', schools: 'Muungano Boys SS' },
     { id: 3, name: 'Mwl. Mapambano Muhike', schools: 'Nyankumbu Girls SS' },
     { id: 4, name: 'Mwl. Hassan L', schools: 'Chato Technical SS' },
@@ -40,7 +45,8 @@ const MembersPage = () => {
 
   const filteredMembers = members.filter(member =>
     member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    member.schools.toLowerCase().includes(searchQuery.toLowerCase())
+    member.schools.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (member.role && member.role.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const statistics = [
@@ -81,6 +87,37 @@ const MembersPage = () => {
           </p>
         </div>
 
+        {/* Coordinator Spotlight */}
+        <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 mb-12 text-white">
+          <div className="flex items-center mb-6">
+            <Star className="h-8 w-8 text-yellow-300 mr-3" />
+            <h2 className="text-3xl font-bold">Examination Coordinator</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Mwl. Daudi Musula Manumba</h3>
+              <p className="text-green-100 mb-4">
+                Professional Geography teacher with extensive experience in secondary education. 
+                Has taught at multiple institutions including Chato SS, Janeth Magufuli Girls SS, 
+                and Nyankumbu Girls SS, bringing years of expertise in Geography education and 
+                examination coordination.
+              </p>
+              <div className="flex items-center text-green-100">
+                <School className="h-5 w-5 mr-2" />
+                <span>Currently at: Nyankumbu Girls SS & Janeth Magufuli Girls SS</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <User className="h-16 w-16 text-white" />
+              </div>
+              <div className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-full font-bold inline-block">
+                EXAMINATION COORDINATOR
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {statistics.map((stat, index) => (
@@ -101,7 +138,7 @@ const MembersPage = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Search by member name or school..."
+              placeholder="Search by member name, school, or role..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -122,22 +159,30 @@ const MembersPage = () => {
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">#</th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Member Name</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Role</th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">School(s)</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredMembers.map((member) => (
-                  <tr key={member.id} className="hover:bg-gray-50">
+                  <tr key={member.id} className={`hover:bg-gray-50 ${member.role ? 'bg-green-50' : ''}`}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">#{member.id}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center mr-3">
-                          <User className="text-white" size={16} />
+                        <div className={`w-8 h-8 ${member.role ? 'bg-gradient-to-br from-yellow-500 to-orange-500' : 'bg-gradient-to-br from-green-500 to-blue-500'} rounded-full flex items-center justify-center mr-3`}>
+                          {member.role ? <Star className="text-white" size={16} /> : <User className="text-white" size={16} />}
                         </div>
                         <div className="text-sm font-medium text-gray-900">{member.name}</div>
                       </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {member.role && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          {member.role}
+                        </span>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center">
