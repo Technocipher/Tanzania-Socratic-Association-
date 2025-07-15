@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Download, Trophy, TrendingUp, Users, Award, FileText, Calendar, ExternalLink } from 'lucide-react';
+import { Search, Download, Trophy, TrendingUp, Users, Award, FileText, Calendar, ExternalLink, Clock } from 'lucide-react';
 
 const SocraticSeriesResultsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,21 +11,21 @@ const SocraticSeriesResultsPage = () => {
       title: 'Socratic Series 1 - 2024',
       date: 'March 2024',
       participants: 2500,
-      status: 'Published'
+      status: 'Pending'
     },
     {
       id: 'series2-2024',
       title: 'Socratic Series 2 - 2024',
       date: 'June 2024',
       participants: 3200,
-      status: 'Published'
+      status: 'Pending'
     },
     {
       id: 'series3-2024',
       title: 'Socratic Series 3 - 2024',
       date: 'September 2024',
       participants: 2800,
-      status: 'Published'
+      status: 'Pending'
     }
   ];
 
@@ -165,46 +164,22 @@ const SocraticSeriesResultsPage = () => {
         {/* Available Results */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Available Results</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {resultsSeries.map((series, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-green-500">
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold text-gray-900">{series.title}</h3>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-medium">
-                      {series.status}
-                    </span>
-                  </div>
-                  
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-gray-600">
-                      <Calendar size={16} className="mr-2" />
-                      <span>{series.date}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Users size={16} className="mr-2" />
-                      <span>{series.participants.toLocaleString()} participants</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors"
-                    >
-                      View Results
-                    </button>
-                    <button
-                      onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
-                    >
-                      <Download className="mr-2" size={16} />
-                      Download PDF
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div className="text-orange-500 mb-4">
+              <Clock size={48} className="mx-auto" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Results Pending</h3>
+            <p className="text-gray-600 mb-6">
+              Examination results are currently being processed and will be available soon. 
+              Please check back later for updates.
+            </p>
+            <button
+              onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
+              className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+            >
+              <Download className="mr-2" size={16} />
+              Download Complete Results
+            </button>
           </div>
         </div>
 
@@ -212,10 +187,10 @@ const SocraticSeriesResultsPage = () => {
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Top Performing Schools</h2>
           <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="text-yellow-500 mb-4">
-              <Trophy size={48} className="mx-auto" />
+            <div className="text-orange-500 mb-4">
+              <Clock size={48} className="mx-auto" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Results Pending</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Rankings Pending</h3>
             <p className="text-gray-600 mb-6">
               Top performing schools rankings are currently being processed and will be available soon.
             </p>
