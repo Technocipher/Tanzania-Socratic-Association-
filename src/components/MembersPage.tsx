@@ -8,7 +8,7 @@ const MembersPage = () => {
     { 
       id: 1, 
       name: 'Mwl. Daudi Musula Manumba', 
-      schools: 'Nyankumbu Girls SS & Janeth Magufuli Girls SS',
+      schools: 'Nyankumbu Girls SS',
       role: 'EXAMINATION COORDINATOR',
       about: 'Professional Geography teacher with extensive experience in secondary education. Has taught at multiple institutions including Chato SS, Janeth Magufuli Girls SS, and Nyankumbu Girls SS, bringing years of expertise in Geography education and examination coordination.'
     },
@@ -104,7 +104,7 @@ const MembersPage = () => {
               </p>
               <div className="flex items-center text-green-100">
                 <School className="h-5 w-5 mr-2" />
-                <span>Currently at: Nyankumbu Girls SS & Janeth Magufuli Girls SS</span>
+                <span>Currently at: Nyankumbu Girls SS</span>
               </div>
             </div>
             <div className="text-center">
