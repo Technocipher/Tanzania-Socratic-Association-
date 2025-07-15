@@ -7,6 +7,7 @@ import StorePage from '../components/StorePage';
 import ContactPage from '../components/ContactPage';
 import AvailableCountriesPage from '../components/AvailableCountriesPage';
 import MemberRegistrationPage from '../components/MemberRegistrationPage';
+import MembersPage from '../components/MembersPage';
 import AnnouncementsPage from '../components/AnnouncementsPage';
 import SocraticSeriesExamsPage from '../components/SocraticSeriesExamsPage';
 import SocraticSeriesResultsPage from '../components/SocraticSeriesResultsPage';
@@ -35,6 +36,7 @@ const Index = () => {
     { name: 'About', id: 'about' },
     { name: 'Schools', id: 'schools' },
     { name: 'Countries', id: 'countries' },
+    { name: 'Members', id: 'members' },
     { name: 'Announcements', id: 'announcements' },
     { name: 'Exams', id: 'exams' },
     { name: 'Results', id: 'results' },
@@ -53,6 +55,8 @@ const Index = () => {
         return <SchoolsPage />;
       case 'countries':
         return <AvailableCountriesPage />;
+      case 'members':
+        return <MembersPage />;
       case 'announcements':
         return <AnnouncementsPage />;
       case 'exams':

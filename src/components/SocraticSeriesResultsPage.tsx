@@ -30,14 +30,6 @@ const SocraticSeriesResultsPage = () => {
     }
   ];
 
-  const topPerformers = [
-    { rank: 1, school: 'CHATO TECH SS', averageScore: 95.2, region: 'Geita' },
-    { rank: 2, school: 'DAREDA HIGH SCHOOL', averageScore: 94.8, region: 'Manyara' },
-    { rank: 3, school: 'ARUSHA SCIENCE SS', averageScore: 93.5, region: 'Arusha' },
-    { rank: 4, school: 'JANETH MAGUFULI GIRLS SS', averageScore: 92.1, region: 'Mwanza' },
-    { rank: 5, school: 'LAUREATE SCHOOL OF ZANZIBAR', averageScore: 91.8, region: 'Zanzibar' }
-  ];
-
   const statistics = [
     {
       icon: Users,
@@ -196,10 +188,16 @@ const SocraticSeriesResultsPage = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors">
+                    <button
+                      onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition-colors"
+                    >
                       View Results
                     </button>
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center">
+                    <button
+                      onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
+                    >
                       <Download className="mr-2" size={16} />
                       Download PDF
                     </button>
@@ -213,46 +211,21 @@ const SocraticSeriesResultsPage = () => {
         {/* Top Performers */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Top Performing Schools</h2>
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Rank</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">School</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Region</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">Average Score</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {topPerformers.map((performer, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {performer.rank <= 3 && (
-                            <Trophy className={`mr-2 ${
-                              performer.rank === 1 ? 'text-yellow-500' :
-                              performer.rank === 2 ? 'text-gray-400' :
-                              'text-yellow-600'
-                            }`} size={20} />
-                          )}
-                          <span className="text-sm font-medium text-gray-900">#{performer.rank}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{performer.school}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{performer.region}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-bold text-green-600">{performer.averageScore}%</div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="bg-white rounded-xl shadow-lg p-8 text-center">
+            <div className="text-yellow-500 mb-4">
+              <Trophy size={48} className="mx-auto" />
             </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Results Pending</h3>
+            <p className="text-gray-600 mb-6">
+              Top performing schools rankings are currently being processed and will be available soon.
+            </p>
+            <button
+              onClick={() => window.open('https://gofile.io/d/BQC8o2', '_blank')}
+              className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+            >
+              <Download className="mr-2" size={16} />
+              Download Complete Results
+            </button>
           </div>
         </div>
 
