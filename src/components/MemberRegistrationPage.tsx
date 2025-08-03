@@ -1,39 +1,64 @@
+import React, { useState } from 'react'; import { UserPlus, Phone, MapPin, School, Users, CheckCircle, AlertCircle, Send } from 'lucide-react';
 
-import React, { useState } from 'react';
-import { UserPlus, Mail, Phone, MapPin, School, Users, CheckCircle, AlertCircle } from 'lucide-react';
+const MemberRegistrationPage = () => { const [formData, setFormData] = useState({ fullName: '', phoneNumber: '', location: '', schoolName: '', inWhatsAppGroup: '' }); const [errors, setErrors] = useState({}); const [isSubmitted, setIsSubmitted] = useState(false); const [isSubmitting, setIsSubmitting] = useState(false); const [submitError, setSubmitError] = useState('');
 
-const MemberRegistrationPage = () => {
-  const [formData, setFormData] = useState({
+const validateForm = () => { const newErrors = {};
+
+if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+if (!formData.phoneNumber.trim()) {
+  newErrors.phoneNumber = 'Phone number is required';
+} else if (!/^\+?[\d\s\-]+$/.test(formData.phoneNumber)) {
+  newErrors.phoneNumber = 'Enter a valid phone number';
+}
+if (!formData.location.trim()) newErrors.location = 'Location is required';
+if (!formData.schoolName.trim()) newErrors.schoolName = 'School name is required';
+if (!formData.inWhatsAppGroup) newErrors.inWhatsAppGroup = 'Please select an option';
+
+setErrors(newErrors);
+return Object.keys(newErrors).length === 0;
+
+};
+
+const handleInputChange = (e) => { const { name, value } = e.target; setFormData(prev => ({ ...prev, [name]: value })); if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' })); if (submitError) setSubmitError(''); };
+
+const handleSubmit = async (e) => { e.preventDefault(); if (!validateForm()) return;
+
+setIsSubmitting(true);
+setSubmitError('');
+
+try {
+  const whatsappMessage = `🎓 New TASSA Member Registration:%0A👤 Name: ${formData.fullName}%0A📞 Phone: ${formData.phoneNumber}%0A📍 Location: ${formData.location}%0A🏫 School: ${formData.schoolName}%0A💬 In WhatsApp Group: ${formData.inWhatsAppGroup}`;
+
+  const whatsappLink = `https://wa.me/255752837561?text=${whatsappMessage}`;
+  window.open(whatsappLink, '_blank');
+
+  setIsSubmitted(true);
+  setFormData({
     fullName: '',
     phoneNumber: '',
     location: '',
     schoolName: '',
     inWhatsAppGroup: ''
   });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+} catch (error) {
+  console.error('Submission error:', error);
+  setSubmitError('Something went wrong!');
+} finally {
+  setIsSubmitting(false);
+}
 
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-    
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    }
-    
-    if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = 'Phone number is required';
-    } else if (!/^\+?[\d\s\-\(\)]+$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Please enter a valid phone number';
-    }
-    
-    if (!formData.location.trim()) {
-      newErrors.location = 'Location is required';
-    }
-    
-    if (!formData.schoolName.trim()) {
-      newErrors.schoolName = 'School name is required';
+};
+
+if (isSubmitted) { return ( <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/20 py-20"> <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8"> <div className="bg-card rounded-2xl shadow-xl p-8 text-center"> <CheckCircle className="h-16 w-16 text-primary mx-auto mb-6" /> <h2 className="text-3xl font-bold text-foreground mb-4">Registration Sent via WhatsApp!</h2> <p className="text-lg text-muted-foreground mb-6"> Thank you for registering! The message has been sent via WhatsApp. </p> <button onClick={() => setIsSubmitted(false)} className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-all duration-300" > Register Another Member </button> </div> </div> </div> ); }
+
+return ( <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/20 py-20"> <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8"> <div className="text-center mb-12"> <div className="flex justify-center items-center mb-6"> <UserPlus className="h-12 w-12 text-primary mr-4" /> <h1 className="text-4xl font-bold text-foreground">Member Registration</h1> </div> <p className="text-xl text-muted-foreground max-w-3xl mx-auto"> Join the Tanzania Advanced Schools Socratic Association and become part of our educational community. </p> </div>
+
+<div className="bg-card rounded-2xl shadow-xl p-8">
+      {submitError && (
+        <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg flex items-center">
+          <AlertCircle className="h-5 w-5 text-destructive mr-3" />
+          <p className="text-destructive">{submitError}</
+
     }
     
     if (!formData.inWhatsAppGroup) {
