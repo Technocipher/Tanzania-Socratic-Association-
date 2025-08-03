@@ -32,7 +32,11 @@ const SchoolsPage = () => {
     'KIFUNGILO GIRLS SS',
     'MWISI SS',
     'LAUREATE SCHOOL OF ZANZIBAR',
-    'LUCAS MALIA SS'
+    'LUCAS MALIA SS',
+    'ZIBA SS',
+    'TURA SS',
+    'KANADI SS',
+    'MWENGE SS'
   ];
 
   return (
