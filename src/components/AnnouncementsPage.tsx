@@ -8,6 +8,15 @@ const AnnouncementsPage = () => {
   const announcements = [
     {
       id: 1,
+      title: "🗓️ TANGAZO KWA WAALIMU WAGENI – UTARATIBU WA MITIHANI YA GEOGRAPHY",
+      content: "Tunapenda kuwakaribisha rasmi waalimu wageni katika programu zetu za mitihani ya somo la Geography kwa Kidato cha Tano na Sita. Tafadhali fuatilia utaratibu ufuatao:\n\n✅ KIDATO CHA TANO:\n\nMitihani itaandaliwa kulingana na mada zitakazokuwa zimefundishwa kwa kipindi husika.\n\nGharama ya kila mfululizo (series) wa mtihani ni TSh 5,000 kwa mwezi utakapofanyika mtihani.\n\n✅ KIDATO CHA SITA:\n\nMitihani itahusisha mada zote za Paper 1 & 2.\n\nGharama ni TSh 10,000 kwa kila seti ya mitihani, ikijumuisha:\n\nMitihani yote (Paper 1 & 2)\n\nMarking guides\n\nUandaaji wa matokeo\n\nTaarifa ya tathmini na uchambuzi wa ufaulu (Analysis & Evaluation Report)\n\n🗓️ RATIBA YA SERIES (Kidato cha Sita):\n\nJumla ya Series 4 kwa Term hii, kuanzia Julai hadi Novemba.\n\nSeries No. 1 ilifanyika tarehe 29–30 Julai 2025, na kwa sasa zoezi la marking linaendelea.\n\nMatokeo ya Series 1 yatatolewa tarehe 11 Agosti 2025.\n\nSeries No. 2 itafanyika ndani ya mwezi huu wa Agosti.\n\nRatiba kamili ya series zijazo inapatikana kwenye kalenda yetu rasmi ya term (Socratic Almanac) – itatumwa inbox kwa walimu wote waliosajiliwa.\n\n🗓️ KIDATO CHA TANO:\n\nMitihani (series) zitaanza Septemba, baada ya tathmini ya mada zilizofundishwa kufanyika.\n\n---\n\nKwa taarifa zaidi au usaidizi, tafadhali wasiliana nasi kupitia njia zetu rasmi.\n\nAsanteni sana na Karibuni kwa Ushirikiano!",
+      date: "2025-08-03",
+      time: "10:00 AM",
+      priority: "high",
+      category: "Important Notice"
+    },
+    {
+      id: 2,
       title: "🎉 CONGRATULATIONS TO OUR DEDICATED GEOGRAPHY TEACHERS! 🎉",
       content: "We are thrilled to extend our heartfelt CONGRATULATIONS to all Geography teachers for achieving outstanding results in the NECTA examinations! 🌍📚\n\nYour tireless efforts, strategic preparation, and commitment to using Series Exams have yielded remarkable success. The improvement in performance is a true reflection of your dedication, teamwork, and passion for excellence in education.\n\nThe Series Exams played a pivotal role in equipping students with the skills, confidence, and knowledge needed to shine in the final exams. This achievement would not have been possible without your continuous support and hard work.",
       date: "2025-01-09",

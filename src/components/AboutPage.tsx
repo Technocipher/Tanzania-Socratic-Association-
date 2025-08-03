@@ -47,7 +47,7 @@ const AboutPage = () => {
                     <BookOpen className="text-blue-500 mr-3 mt-1 flex-shrink-0" size={20} />
                     <div>
                       <h4 className="font-semibold text-gray-900">Previous Experience</h4>
-                      <p className="text-gray-600">Former Geography Teacher at Chato Technical Secondary School</p>
+                      <p className="text-gray-600">Former Geography Teacher at Chato Technical Secondary School and Janeth Magufuli High School</p>
                     </div>
                   </div>
 

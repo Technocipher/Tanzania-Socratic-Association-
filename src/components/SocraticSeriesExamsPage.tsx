@@ -19,7 +19,7 @@ const SocraticSeriesExamsPage = () => {
     {
       title: "Socratic Series 1",
       date: "July 2025",
-      status: "Registration Going",
+      status: "Marking process ongoing",
       subjects: ["Geography"],
       duration: "3 hours"
     },
